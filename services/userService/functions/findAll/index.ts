@@ -1,10 +1,13 @@
 import express from "express";
-import { CustomError } from "../../../../src/erros/CustomError";
+import UserFindAllAdapter from "../../../../src/modules/users/adapter/UserFindAllAdapter";
+import asyncHandler from "express-async-handler";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    res.send("find All")
-})
+router.get("/", asyncHandler(async (req, res) => {
+    const adapter = new UserFindAllAdapter();
+    const users = await adapter.execute();
+    res.json(users ?? []);
+}))
 
 export default router;
